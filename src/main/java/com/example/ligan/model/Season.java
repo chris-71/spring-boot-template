@@ -1,8 +1,18 @@
+package com.example.ligan.model;
+
 import java.io.Serializable;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+
 @Entity
 @Table(name = "season")
 public class Season implements Serializable {
@@ -10,52 +20,47 @@ public class Season implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int year;
+    private int seasonYear;
 
-    @OneToMany(mappedBy = "season", cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "team_season",
+        joinColumns = @JoinColumn(name = "season_id"),
+        inverseJoinColumns = @JoinColumn(name = "team_id")
+    )
     private List<Team> teams;
 
+    public Season() {
+    }
+    
     // Constructor
-    private Season(Builder builder) {
-        this.year = builder.year;
+    private Season(SeasonBuilder builder) {
+        this.seasonYear = builder.seasonYear;
         this.teams = builder.teams;
     }
 
-    public static Builder() {
-        return new Builder();
+    // Getters
+    public int getSeasonYear() {
+        return seasonYear;
     }
 
-    // Getters and Setters
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
+    public void addTeam(Team team) {
+        teams.add(team);
     }
 
     public List<Team> getTeams() {
         return teams;
     }
-
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
-    }
-
     
-    public static class Builder {   
-        private int year;
+    public static class SeasonBuilder {   
+        private int seasonYear;
         private List<Team> teams;
 
-        public Builder() {  
+        public SeasonBuilder(int seasonYear) {
+            this.seasonYear = seasonYear;
         }
 
-        public Builder year(int year) {
-            this.year = year;
-            return this;
-        }
-
-        public Builder teams(List<Team> teams) {
+        public SeasonBuilder teams(List<Team> teams) {
             this.teams = teams;
             return this;
         }

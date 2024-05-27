@@ -1,74 +1,65 @@
+package com.example.ligan.model;
+
 import java.io.Serializable;
 import java.util.List;
-import java.io.Serializable;
-import java.util.List;
-import java.io.Serializable;
-import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 
 @Entity
-    public class Team implements Serializable {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+@Table(name = "team")
+public class Team implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        private String name;
+    private String name;
 
-        @OneToMany(mappedBy = "team")
-        private List<Season> seasonList;
+    @ManyToMany(mappedBy = "teams")
+    private List<Season> seasonList;
+
+    public Team() {
+    }
 
     // Constructor
-    private Team(Builder builder) {
+    private Team(TeamBuilder builder) {
         this.name = builder.name;
         this.seasonList = builder.seasonList;
     }
 
-    // Getters and setters
+    // Getters
+    public Long getId() {
+        return id;
+    }
+    
     public String getName() {
         return name;
     }
 
     public List<Season> getSeasonList() {
-        return season;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSeasonList(List<Season> seasonList) {
-        this.season = season;
-    }
-
-    public void addSeason(Season season) {
-        this.seasonList.add(season);
+        return seasonList;
     }
 
     // Builder class
-    public static class Builder {
+    public static class TeamBuilder {
         private String name;
         private List<Season> seasonList;
 
-        public Builder() {
-        }
-
-        public Builder name(String name) {
+        public TeamBuilder(String name) {
             this.name = name;
-            return this;
         }
 
-        public Builder seasonList(List<Season> seasonList) {
-            this.season = season;
+        public TeamBuilder seasonList(List<Season> seasonList) {
+            this.seasonList = seasonList;
             return this;
         }
 
         public Team build() {
-            return new Team(name, season);
+            return new Team(this);
         }
     }
 }

@@ -1,135 +1,36 @@
-import java.io.Serializable;
-import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import java.io.Serializable;
+package com.example.ligan.model;
 
+import java.io.Serializable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "match")
 public class Match implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
     private Team homeTeam;
+
+    @ManyToOne
     private Team awayTeam;
+
+    @ManyToOne
     private Season season;
+
     private int homeGoal;
     private int awayGoal;
 
-    @Entity
-    public class Match implements Serializable {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-
-        @ManyToOne
-        private Team homeTeam;
-
-        @ManyToOne
-        private Team awayTeam;
-
-        @ManyToOne
-        private Season season;
-
-        private int homeGoal;
-        private int awayGoal;
-
-        private Match(Builder builder) {
-            this.homeTeam = builder.homeTeam;
-            this.awayTeam = builder.awayTeam;
-            this.season = builder.season;
-            this.homeGoal = builder.homeGoal;
-            this.awayGoal = builder.awayGoal;
-        }
-
-        public static Builder builder() {
-            return new Builder();
-        }
-
-        // Getters and setters
-        public Long getId() {
-            return id;
-        }
-
-        public Team getHomeTeam() {
-            return homeTeam;
-        }
-
-        public void setHomeTeam(Team homeTeam) {
-            this.homeTeam = homeTeam;
-        }
-
-        public Team getAwayTeam() {
-            return awayTeam;
-        }
-
-        public void setAwayTeam(Team awayTeam) {
-            this.awayTeam = awayTeam;
-        }
-
-        public Season getSeason() {
-            return season;
-        }
-
-        public void setSeason(Season season) {
-            this.season = season;
-        }
-
-        public int getHomeGoal() {
-            return homeGoal;
-        }
-
-        public void setHomeGoal(int homeGoal) {
-            this.homeGoal = homeGoal;
-        }
-
-        public int getAwayGoal() {
-            return awayGoal;
-        }
-
-        public void setAwayGoal(int awayGoal) {
-            this.awayGoal = awayGoal;
-        }
-
-        public static class Builder {
-            private Team homeTeam;
-            private Team awayTeam;
-            private Season season;
-            private int homeGoal;
-            private int awayGoal;
-
-            private Builder() {
-            }
-
-            public Builder homeTeam(Team homeTeam) {
-                this.homeTeam = homeTeam;
-                return this;
-            }
-
-            public Builder awayTeam(Team awayTeam) {
-                this.awayTeam = awayTeam;
-                return this;
-            }
-
-            public Builder season(Season season) {
-                this.season = season;
-                return this;
-            }
-
-            public Builder homeGoal(int homeGoal) {
-                this.homeGoal = homeGoal;
-                return this;
-            }
-
-            public Builder awayGoal(int awayGoal) {
-                this.awayGoal = awayGoal;
-                return this;
-            }
-
-            public Match build() {
-                return new Match(this);
-            }
-        }
+    public Match() {
     }
-    private Match(Builder builder) {
+
+    private Match(MatchBuilder builder) {
         this.homeTeam = builder.homeTeam;
         this.awayTeam = builder.awayTeam;
         this.season = builder.season;
@@ -137,83 +38,50 @@ public class Match implements Serializable {
         this.awayGoal = builder.awayGoal;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    // Getters
+    public Long getId() {
+        return id;
     }
-
-    // Getters and setters
 
     public Team getHomeTeam() {
         return homeTeam;
-    }
-
-    public void setHomeTeam(Team homeTeam) {
-        this.homeTeam = homeTeam;
     }
 
     public Team getAwayTeam() {
         return awayTeam;
     }
 
-    public void setAwayTeam(Team awayTeam) {
-        this.awayTeam = awayTeam;
-    }
-
     public Season getSeason() {
         return season;
-    }
-
-    public void setSeason(Season season) {
-        this.season = season;
     }
 
     public int getHomeGoal() {
         return homeGoal;
     }
 
-    public void setHomeGoal(int homeGoal) {
-        this.homeGoal = homeGoal;
-    }
-
     public int getAwayGoal() {
         return awayGoal;
     }
 
-    public void setAwayGoal(int awayGoal) {
-        this.awayGoal = awayGoal;
-    }
-
-    public static class Builder {
+    public static class MatchBuilder {
         private Team homeTeam;
         private Team awayTeam;
         private Season season;
         private int homeGoal;
         private int awayGoal;
 
-        private Builder() {
-        }
-
-        public Builder homeTeam(Team homeTeam) {
+            public MatchBuilder(Team homeTeam, Team awayTeam, Season season) {
             this.homeTeam = homeTeam;
-            return this;
-        }
-
-        public Builder awayTeam(Team awayTeam) {
             this.awayTeam = awayTeam;
-            return this;
-        }
-
-        public Builder season(Season season) {
             this.season = season;
-            return this;
         }
-
-        public Builder homeGoal(int homeGoal) {
+        
+        public MatchBuilder homeGoal(int homeGoal) {
             this.homeGoal = homeGoal;
             return this;
         }
 
-        public Builder awayGoal(int awayGoal) {
+        public MatchBuilder awayGoal(int awayGoal) {
             this.awayGoal = awayGoal;
             return this;
         }
